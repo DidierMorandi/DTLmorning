@@ -3,8 +3,6 @@
     [string]$UserName = "Didier"
 )
 
-Start-Sleep -Seconds 8
-
 $ErrorActionPreference = "SilentlyContinue"
 $ignoredDirs = @(".git", "build", "dist", "__pycache__", "logs", "node_modules")
 
