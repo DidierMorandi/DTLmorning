@@ -1,6 +1,6 @@
-# DTL Git Morning
+# DTL Morning
 
-DTL Git Morning is a small Windows startup helper that checks local Git repositories and shows a morning summary in a Windows message box.
+DTL Morning is a small Windows startup helper that checks local Git repositories and shows a morning summary in a Windows message box.
 
 After a short delay, the script scans a root folder for Git repositories, checks their status, and tells you what needs attention:
 
@@ -28,7 +28,7 @@ If everything is clean, it displays a calm "no action required" message.
 Run the script manually from PowerShell:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\Utilisateur\Documents\Mes sites Web\Secours catholique\outils\DTLmorning\DTLmorning.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\Utilisateur\Documents\outils\DTLmorning\DTLmorning.ps1"
 ```
 
 By default, the script scans the folder where `DTLmorning.ps1` is located and greets `Didier`.
@@ -43,12 +43,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Path\To\DTLmorning.p
 
 The easiest way to show the message every time you open a Windows session is to add the VBS launcher to the Windows Startup folder.
 
-1. Open the DTL Git Morning folder.
+1. Open the DTL Morning folder.
 2. Edit `DTLmorning.vbs`.
 3. Make sure `scriptPath` points to the real location of `DTLmorning.ps1`:
 
 ```vbscript
-scriptPath = "C:\Users\Utilisateur\Documents\Mes sites Web\Secours catholique\outils\DTLmorning\DTLmorning.ps1"
+scriptPath = "C:\Users\Utilisateur\Documents\outils\DTLmorning\DTLmorning.ps1"
 ```
 
 4. Press `Win + R`.
@@ -73,10 +73,10 @@ Instead of copying the VBS file itself, you can create a shortcut in the Startup
 4. Use this target:
 
 ```text
-wscript.exe "C:\Users\Utilisateur\Documents\Mes sites Web\Secours catholique\outils\DTLmorning\DTLmorning.vbs"
+wscript.exe "C:\Users\Utilisateur\Documents\outils\DTLmorning\DTLmorning.vbs"
 ```
 
-5. Name the shortcut `DTL Git Morning`.
+5. Name the shortcut `DTL Morning`.
 
 ## How It Works
 
@@ -96,4 +96,4 @@ To disable the morning message:
 1. Press `Win + R`.
 2. Type `shell:startup`.
 3. Press Enter.
-4. Delete `DTLmorning.vbs` or the `DTL Git Morning` shortcut from the Startup folder.
+4. Delete `DTLmorning.vbs` or the `DTL Morning` shortcut from the Startup folder.
