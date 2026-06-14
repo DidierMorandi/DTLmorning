@@ -97,3 +97,16 @@ To disable the morning message:
 2. Type `shell:startup`.
 3. Press Enter.
 4. Delete `DTLmorning.vbs` or the `DTL Morning` shortcut from the Startup folder.
+
+## Update - 14 June 2026
+
+`DTLmorning.ps1` now analyzes Git repositories with a prioritized action model.
+
+Confirmed points:
+
+- Recursive Git repository discovery from the configured root folder.
+- Detection of modified, untracked, staged files, local commits to publish, and remote commits to pull.
+- Simple time estimate based on the number of detected actions.
+- Summary displayed in a Windows message box.
+- Main parameters: `-Root`, `-UserName`, and `-DelaySeconds`.
+- The script can be launched at Windows sign-in through a shortcut or VBS launcher.
