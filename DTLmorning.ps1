@@ -1,6 +1,6 @@
 ﻿param(
-    [string]$Root = $PSScriptRoot,
-    [string]$UserName = "Didier"
+    [string]$Root = (Split-Path -Parent $PSScriptRoot),
+    [string]$UserName = [Environment]::UserName
 )
 
 $ErrorActionPreference = "SilentlyContinue"
@@ -14,26 +14,28 @@ function Find-GitRepositories {
         return $repositories
     }
 
-    Get-ChildItem -LiteralPath $RootPath -Directory -Force | Sort-Object Name | ForEach-Object {
-        if ($_.Name.StartsWith(".") -or $ignoredDirs -contains $_.Name) {
-            return
-        }
+	Get-ChildItem -LiteralPath $RootPath -Directory -Force | Sort-Object Name | ForEach-Object {
+		if ($_.Name.StartsWith(".") -or $ignoredDirs -contains $_.Name) {
+			return
+		}
 
-        if (Test-Path -LiteralPath (Join-Path $_.FullName ".git")) {
-            $repositories.Add($_.FullName)
-            return
-        }
+		if (Test-Path -LiteralPath (Join-Path $_.FullName ".git")) {
+			$repositories.Add($_.FullName)
+			return
+		}
 
-        Get-ChildItem -LiteralPath $_.FullName -Directory -Recurse -Force | Where-Object {
-            -not $_.Name.StartsWith(".") -and $ignoredDirs -notcontains $_.Name
-        } | ForEach-Object {
-            if (Test-Path -LiteralPath (Join-Path $_.FullName ".git")) {
-                $repositories.Add($_.FullName)
-            }
-        }
-    }
+		Get-ChildItem -LiteralPath $_.FullName -Directory -Recurse -Force |
+			Where-Object {
+				-not $_.Name.StartsWith(".") -and $ignoredDirs -notcontains $_.Name
+			} |
+			ForEach-Object {
+				if (Test-Path -LiteralPath (Join-Path $_.FullName ".git")) {
+					$repositories.Add($_.FullName)
+				}
+			}
+	}
 
-    return $repositories
+return $repositories
 }
 
 function Get-BranchAheadBehind {
