@@ -1,5 +1,4 @@
-```powershell
-<#
+﻿<#
 .SYNOPSIS
     Installe DTL Morning au démarrage de la session Windows.
 
@@ -59,4 +58,3 @@ Write-Host "  $MorningScript"
 Write-Host ""
 Write-Host "DTL Morning sera lancé automatiquement à la prochaine ouverture de session."
 Write-Host ""
-```
