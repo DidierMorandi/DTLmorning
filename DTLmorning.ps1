@@ -1,6 +1,7 @@
 ﻿param(
     [string]$Root = (Split-Path -Parent $PSScriptRoot),
-    [string]$UserName = [Environment]::UserName
+    [string]$UserName = [Environment]::UserName,
+    [string]$XamppPath = "C:\xampp"
 )
 
 $ErrorActionPreference = "SilentlyContinue"
@@ -154,6 +155,17 @@ if ($actions.Count -eq 0) {
 
 $lines.Add("")
 $lines.Add("Bonne journée !")
+$lines.Add("")
+$lines.Add("Apache ne semble pas démarré. Ouvrir le panneau XAMPP ?")
 
 Add-Type -AssemblyName PresentationFramework
-[System.Windows.MessageBox]::Show(($lines -join [Environment]::NewLine), "DTL Git du matin", "OK", "Information") | Out-Null
+$answer = [System.Windows.MessageBox]::Show(($lines -join [Environment]::NewLine), "DTL Git du matin", "YesNo", "Question")
+
+if ($answer -eq "Yes") {
+    $xamppControl = Join-Path $XamppPath "xampp-control.exe"
+    if (Test-Path -LiteralPath $xamppControl) {
+        Start-Process -FilePath $xamppControl -WorkingDirectory $XamppPath
+    } else {
+        [System.Windows.MessageBox]::Show("Impossible de trouver le panneau XAMPP dans $XamppPath.", "DTL Git du matin", "OK", "Warning") | Out-Null
+    }
+}
