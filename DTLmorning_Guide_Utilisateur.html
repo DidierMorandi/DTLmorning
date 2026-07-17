@@ -46,7 +46,7 @@
     <header class="doc-header">
       <h1><span class="accent">DTLmorning</span> - Guide utilisateur</h1>
       <p>Guide du résumé matinal des dépôts Git locaux.</p>
-      <span class="pill">PowerShell</span>
+      <span class="pill">Python 3.12</span>
       <span class="pill">Windows</span>
       <span class="pill">Git</span>
     </header>
@@ -57,32 +57,32 @@
 
     <h2 id="prerequis">Prérequis</h2>
     <ul>
-      <li>Windows avec PowerShell.</li>
+      <li>Windows ; Python 3.12 uniquement pour exécuter les sources.</li>
       <li>Git installé et disponible en ligne de commande.</li>
       <li>Des dépôts Git locaux placés sous le dossier que DTLmorning doit analyser.</li>
     </ul>
 
-    <h2 id="installation">Installer le script</h2>
+    <h2 id="installation">Installer l'application</h2>
     <div class="section-block">
       <h3>1. Vérifier les fichiers</h3>
-      <p>Le dossier DTLmorning doit contenir au minimum ces deux fichiers :</p>
+      <p>Le dossier DTLmorning doit contenir au minimum ces deux exécutables :</p>
       <ul>
-        <li><code>DTLmorning.ps1</code> : le script PowerShell qui inspecte les dépôts Git.</li>
-        <li><code>DTLmorning.vbs</code> : le lanceur Windows qui démarre le script sans garder de fenêtre PowerShell ouverte.</li>
+        <li><code>DTLmorning.exe</code> : l'application Python compilée qui inspecte les dépôts Git.</li>
+        <li><code>Install-DTLmorning.exe</code> : l'installateur du raccourci de démarrage.</li>
       </ul>
     </div>
 
     <div class="section-block">
-      <h3>2. Configurer le lanceur</h3>
-      <p>Ouvrir <code>DTLmorning.vbs</code> dans un éditeur de texte, puis vérifier que la ligne <code>scriptPath</code> pointe vers l'emplacement réel de <code>DTLmorning.ps1</code>.</p>
-      <pre>scriptPath = "C:\Users\Utilisateur\Documents\Secato\outils\DTLmorning\DTLmorning.ps1"</pre>
-      <p class="note">Si le dossier DTLmorning est déplacé, cette ligne doit être mise à jour.</p>
+      <h3>2. Conserver les exécutables ensemble</h3>
+      <p>Placer <code>DTLmorning.exe</code> et <code>Install-DTLmorning.exe</code> dans le même dossier.</p>
+      <pre>C:\Users\Utilisateur\Documents\Secato\outils\DTLmorning\</pre>
+      <p class="note">L'installateur détermine automatiquement le chemin de l'application.</p>
     </div>
 
     <div class="section-block">
       <h3>3. Tester manuellement</h3>
-      <p>Avant de l'installer au démarrage, lancer une première exécution depuis PowerShell :</p>
-      <pre>powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\Utilisateur\Documents\Secato\outils\DTLmorning\DTLmorning.ps1"</pre>
+      <p>Avant de l'installer au démarrage, lancer une première fois l'exécutable :</p>
+      <pre>"C:\Users\Utilisateur\Documents\Secato\outils\DTLmorning\DTLmorning.exe"</pre>
       <p>Une boîte de dialogue doit apparaître avec le résumé des dépôts Git trouvés.</p>
     </div>
 
@@ -91,7 +91,7 @@
       <ol>
         <li>Appuyer sur <code>Win + R</code>.</li>
         <li>Taper <code>shell:startup</code>, puis appuyer sur <code>Entrée</code>.</li>
-        <li>Copier <code>DTLmorning.vbs</code> dans le dossier de démarrage qui vient de s'ouvrir.</li>
+        <li>Lancer <code>Install-DTLmorning.exe</code> et confirmer l'installation.</li>
       </ol>
       <p>À la prochaine ouverture de session Windows, DTLmorning se lancera automatiquement.</p>
     </div>
@@ -118,12 +118,12 @@
     </ol>
 
     <h2 id="demarrage">Démarrage automatique</h2>
-    <p>DTLmorning peut être placé dans le dossier de démarrage Windows via son lanceur VBS ou via un raccourci. Le lanceur utilise <code>wscript.exe</code> et démarre PowerShell avec <code>-WindowStyle Hidden</code>, ce qui évite de laisser une fenêtre ouverte.</p>
-    <p>Variante possible : créer un raccourci dans le dossier de démarrage avec cette cible :</p>
-    <pre>wscript.exe "C:\Users\Utilisateur\Documents\Secato\outils\DTLmorning\DTLmorning.vbs"</pre>
+    <p>L'installateur crée un raccourci dans le dossier de démarrage Windows. Ce raccourci cible directement l'exécutable Python compilé, sans interpréteur intermédiaire.</p>
+    <p>La cible du raccourci est :</p>
+    <pre>"C:\Users\Utilisateur\Documents\Secato\outils\DTLmorning\DTLmorning.exe"</pre>
 
     <h2 id="desactiver">Désactivation</h2>
-    <p>Pour désactiver le rappel, ouvrir à nouveau <code>shell:startup</code>, puis supprimer <code>DTLmorning.vbs</code> ou le raccourci <code>DTL Morning</code>.</p>
+    <p>Pour désactiver le rappel, ouvrir à nouveau <code>shell:startup</code>, puis supprimer le raccourci <code>DTL Morning</code>.</p>
   </main>
 </body>
 </html>

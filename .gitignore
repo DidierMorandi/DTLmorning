@@ -1,5 +1,11 @@
 /logs/
 
-/DTLGitMorning.vbs
+/__pycache__/
+/tests/__pycache__/
+/build/
 
 /DTLmorning_Guide_Utilisateur.docx
+
+/dist/
+
+/tests/

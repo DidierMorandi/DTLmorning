@@ -1,0 +1,2 @@
+pywin32==312
+PyInstaller==6.21.0
