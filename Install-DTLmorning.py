@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Final
 
 
-FALLBACK_DISPLAY_VERSION: Final = "v1.0-8"
+FALLBACK_DISPLAY_VERSION: Final = "v1.0-10"
 WINDOW_TITLE: Final = "DTL Morning - Installation"
 SHORTCUT_DESCRIPTION: Final = (
     "Lance DTL Morning au démarrage de la session Windows"

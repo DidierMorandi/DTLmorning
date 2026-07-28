@@ -1,6 +1,6 @@
 # DTL Morning
 
-**DTL Morning v1.0-8** is a native Python 3.12 application for Windows. It checks local Git repositories and displays a morning summary in a Windows dialog box.
+**DTL Morning v1.0-10** is a native Python 3.12 application for Windows. It checks local Git repositories and displays a morning summary in a Windows dialog box.
 
 The application reports what needs attention:
 
@@ -48,10 +48,15 @@ py -3.12 DTLmorning.py
 By default, the application scans the parent of its own folder and greets the current Windows user. Parameters can be customized:
 
 ```bat
-DTLmorning.exe --root "C:\Path\To\Projects" --user-name "YourName" --xampp-path "C:\xampp"
+DTLmorning.exe --root "C:\Path\To\Projects" --user-name "YourName" --xampp-path "D:\xampp"
 ```
 
 The former parameter names `-Root`, `-UserName`, and `-XamppPath` are also accepted.
+
+Without `--xampp-path`, DTL Morning automatically detects XAMPP through the
+`XAMPP_HOME` and `XAMPP_PATH` environment variables, beside the application,
+then in the `xampp` folder at the root of available drives and in the usual
+Windows application folders.
 
 ## Install at Windows Sign-In
 

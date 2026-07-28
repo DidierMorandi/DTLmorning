@@ -77,8 +77,11 @@ def parse_arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--xampp-path",
         "-XamppPath",
         type=Path,
-        default=Path(r"C:\xampp"),
-        help="Dossier contenant xampp-control.exe.",
+        default=None,
+        help=(
+            "Dossier contenant xampp-control.exe. Sans ce paramètre, "
+            "DTL Morning recherche automatiquement XAMPP."
+        ),
     )
     return parser.parse_args(argv)
 
@@ -274,23 +277,78 @@ def message_box(message: str, flags: int) -> int:
     )
 
 
-def open_xampp(xampp_path: Path) -> None:
-    """Ouvre le panneau XAMPP ou signale son absence."""
+def logical_drive_roots() -> list[Path]:
+    """Retourne les racines des lecteurs Windows actuellement disponibles."""
 
-    control_panel = xampp_path / "xampp-control.exe"
-    if not control_panel.is_file():
+    if os.name != "nt":
+        return []
+    drive_mask = int(ctypes.windll.kernel32.GetLogicalDrives())
+    return [
+        Path(f"{chr(ord('A') + index)}:\\")
+        for index in range(26)
+        if drive_mask & (1 << index)
+    ]
+
+
+def xampp_candidate_directories(xampp_path: Path | None = None) -> list[Path]:
+    """Construit la liste ordonnée et sans doublon des dossiers XAMPP possibles."""
+
+    candidates: list[Path] = []
+    if xampp_path is not None:
+        candidates.append(xampp_path)
+
+    for variable in ("XAMPP_HOME", "XAMPP_PATH"):
+        if value := os.environ.get(variable):
+            candidates.append(Path(value))
+
+    app_directory = application_directory()
+    candidates.extend((app_directory / "xampp", app_directory.parent / "xampp"))
+    candidates.extend(root / "xampp" for root in logical_drive_roots())
+
+    for variable in ("ProgramFiles", "ProgramFiles(x86)", "ProgramData"):
+        if value := os.environ.get(variable):
+            candidates.append(Path(value) / "xampp")
+
+    unique_candidates: list[Path] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        normalized = os.path.normcase(os.path.abspath(candidate))
+        if normalized not in seen:
+            seen.add(normalized)
+            unique_candidates.append(candidate)
+    return unique_candidates
+
+
+def find_xampp_directory(xampp_path: Path | None = None) -> Path | None:
+    """Détecte le premier dossier contenant le panneau de contrôle XAMPP."""
+
+    for candidate in xampp_candidate_directories(xampp_path):
+        if (candidate / "xampp-control.exe").is_file():
+            return candidate.resolve()
+    return None
+
+
+def open_xampp(xampp_path: Path | None = None) -> None:
+    """Détecte et ouvre le panneau XAMPP, ou signale son absence."""
+
+    detected_path = find_xampp_directory(xampp_path)
+    if detected_path is None:
+        searched_paths = os.linesep.join(
+            f"- {candidate}" for candidate in xampp_candidate_directories(xampp_path)
+        )
         message_box(
-            f"Impossible de trouver le panneau XAMPP dans {xampp_path}.",
+            "Impossible de trouver xampp-control.exe."
+            f"{os.linesep}{os.linesep}Dossiers vérifiés :{os.linesep}{searched_paths}",
             MB_OK | MB_ICONWARNING,
         )
         return
 
+    control_panel = detected_path / "xampp-control.exe"
     try:
         subprocess.Popen(
             [str(control_panel)],
-            cwd=xampp_path,
+            cwd=detected_path,
             close_fds=True,
-            **_hidden_process_options(),
         )
     except OSError as exc:
         message_box(
@@ -313,7 +371,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         build_message(arguments.user_name, actions), MB_YESNO | MB_ICONQUESTION
     )
     if answer == IDYES:
-        open_xampp(arguments.xampp_path.resolve())
+        open_xampp(arguments.xampp_path)
     return 0
 
 
